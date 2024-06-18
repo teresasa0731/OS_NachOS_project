@@ -29,6 +29,15 @@
 //	Initially, no ready threads.
 //----------------------------------------------------------------------
 
+int RemainingTimecmp(Thread* t1,Thread* t2){
+    int t1RemainingTime = t1->BurstTime - t1->ElapsedTime;
+    int t2RemainingTime = t2->BurstTime - t2->ElapsedTime;
+    return (t1RemainingTime >= t2RemainingTime) ? 1 : -1; // preemptive SRTN
+}
+
+int Prioritycmp(Thread* t1,Thread* t2){
+    return (t1->priority <= t2->priority) ? 1 : -1; // higher priority do first 
+}
 
 
 //<TODO>
@@ -40,9 +49,12 @@ Scheduler::Scheduler()
 {
 //	schedulerType = type;
     // readyList = new List<Thread *>; 
-    //<TODO>
+    //<TODO1>
     // Initialize L1, L2, L3 ReadyQueue
-    //<TODO>
+    //<TODO1>
+    L1ReadyQueue = new SortedList<Thread *>(RemainingTimecmp);
+    L2ReadyQueue = new SortedList<Thread *>(Prioritycmp);
+    L3ReadyQueue = new List<Thread *>; 
 	toBeDestroyed = NULL;
 } 
 
@@ -53,10 +65,13 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 { 
-    //<TODO>
+    //<TODO1>
     // Remove L1, L2, L3 ReadyQueue
-    //<TODO>
+    //<TODO1>
     // delete readyList; 
+    delete L1; 
+    delete L2; 
+    delete L3; 
 } 
 
 //----------------------------------------------------------------------
@@ -74,6 +89,8 @@ Scheduler::ReadyToRun (Thread *thread)
     // DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
     Statistics* stats = kernel->stats;
+    thread->setStatus(READY);
+    thread->ReadyQTimestamp = kernel->stats->totalTicks;    // in code\machine\stats.h
     //<TODO>
     // According to priority of Thread, put them into corresponding ReadyQueue.
     // After inserting Thread into ReadyQueue, don't forget to reset some values.
@@ -81,6 +98,7 @@ Scheduler::ReadyToRun (Thread *thread)
     // When putting a new thread into L1 ReadyQueue, you need to check whether preemption or not.
     //<TODO>
     // readyList->Append(thread);
+
 }
 
 //----------------------------------------------------------------------

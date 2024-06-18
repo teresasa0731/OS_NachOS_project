@@ -120,6 +120,13 @@ class Thread {
     // 5. set/get RunTime
     // 6. set/get RRTime
     //<TODO>
+    int priority;
+    int StartTimestamp;
+    int BurstTime;
+    int ElapsedTime;
+    int InReadyQTime;
+    int ReadyQTimestamp;
+
 
   private:
     // some of the private data for this class is listed above
