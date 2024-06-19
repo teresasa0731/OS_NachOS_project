@@ -48,6 +48,11 @@ Thread::Thread(char* threadName, int threadID)
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
+    StartTimestamp = 0;   // thread start to run timestamp
+    BurstTime = 0;        // thread total burst time (theoretical)
+    ElapsedTime = 0;      // thread already running time
+    WaitingTime = 0;      // thread waiting in Ready Queue
+    ReadyQTimestamp = 0;  // thread into Ready Queue timestamp
 }
 
 //----------------------------------------------------------------------
@@ -213,12 +218,17 @@ Thread::Yield ()
     
     DEBUG(dbgThread, "Yielding thread: " << name << ", ID: " << ID);
     
-    //<TODO>
+    //<TODO1>
     // 1. Put current_thread in running state to ready state
     // 2. Then, find next thread from ready state to push on running state
     // 3. After resetting some value of current_thread, then context switch
-    kernel->scheduler->Run(nextThread, finishing);
-    //<TODO>
+    this->ElapsedTime += kernel->stats->totalTicks - this->StartTimestamp; 
+    nextThread = kernel->scheduler->FindNextToRun();
+    if (nextThread != NULL) {
+	    kernel->scheduler->ReadyToRun(this);
+	    kernel->scheduler->Run(nextThread, FALSE); 
+    }
+    //<TODO1>
 
     (void) kernel->interrupt->SetLevel(oldLevel);
 }
@@ -262,8 +272,9 @@ Thread::Sleep (bool finishing)
     // , and determine finishing on Scheduler::Run(nextThread, finishing), not here.
     // 1. Update RemainingBurstTime
     // 2. Reset some value of current_thread, then context switch
+    this->ElapsedTime += (kernel->stats->totalTicks - this->StartTimestamp);
     kernel->scheduler->Run(nextThread, finishing);
-    //<TODO>
+    //<TODO1>
 }
 
 //----------------------------------------------------------------------

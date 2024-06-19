@@ -111,7 +111,7 @@ class Thread {
     char* getName() { return (name); }
     void Print() { cout << name; }
     void SelfTest();		// test whether thread impl is working
-    //<TODO>
+    //<TODO1>
     // Set & Get the value in Class Thread
     // 1. get ID
     // 2. set/get Priority
@@ -119,12 +119,12 @@ class Thread {
     // 4. set/get RemainingBurstTime
     // 5. set/get RunTime
     // 6. set/get RRTime
-    //<TODO>
+    //<TODO1>
     int priority;
+    int WaitingTime;      // thread waiting in Ready Queue
     int StartTimestamp;   // thread start to run timestamp
     int BurstTime;        // thread total burst time (theoretical)
     int ElapsedTime;      // thread already running time
-    int WaitingTime;      // thread waiting in Ready Queue
     int ReadyQTimestamp;  // thread into Ready Queue timestamp
 
 
