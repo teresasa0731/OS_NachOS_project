@@ -49,8 +49,8 @@ Thread::Thread(char* threadName, int threadID)
     space = NULL;
 #endif
     StartTimestamp = 0;   // thread start to run timestamp
-    BurstTime = 0;        // thread total burst time (theoretical)
-    ElapsedTime = 0;      // thread already running time
+    RunningTime = 0;        // thread total burst time (theoretical)
+    RemainingBurstTime = ;      // thread already running time
     WaitingTime = 0;      // thread waiting in Ready Queue
     ReadyQTimestamp = 0;  // thread into Ready Queue timestamp
 }
@@ -222,7 +222,8 @@ Thread::Yield ()
     // 1. Put current_thread in running state to ready state
     // 2. Then, find next thread from ready state to push on running state
     // 3. After resetting some value of current_thread, then context switch
-    this->ElapsedTime += kernel->stats->totalTicks - this->StartTimestamp; 
+    this->RunningTime += kernel->stats->totalTicks - this->StartTimestamp; 
+    this->RemainingBurstTime = this->Bursttime - RunningTime;
     nextThread = kernel->scheduler->FindNextToRun();
     if (nextThread != NULL) {
 	    kernel->scheduler->ReadyToRun(this);
@@ -267,12 +268,14 @@ Thread::Sleep (bool finishing)
     while ((nextThread = kernel->scheduler->FindNextToRun()) == NULL)
 	    kernel->interrupt->Idle();	// no one to run, wait for an interruptd
 
-    //<TODO>
+    //<TODO1>
     // In Thread::Sleep(finishing), we put the current_thread to waiting or terminated state (depend on finishing)
     // , and determine finishing on Scheduler::Run(nextThread, finishing), not here.
     // 1. Update RemainingBurstTime
     // 2. Reset some value of current_thread, then context switch
-    this->ElapsedTime += (kernel->stats->totalTicks - this->StartTimestamp);
+    this->RunningTime += (kernel->stats->totalTicks - this->StartTimestamp);
+    this->RemainingBurstTime = bursttime - this->RunningTime;
+    this->RunningTime = 0;
     kernel->scheduler->Run(nextThread, finishing);
     //<TODO1>
 }

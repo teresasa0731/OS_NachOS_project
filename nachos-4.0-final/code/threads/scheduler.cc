@@ -30,9 +30,7 @@
 //----------------------------------------------------------------------
 
 static int RemainingTimecmp(Thread* t1,Thread* t2){
-    int t1RemainingTime = t1->BurstTime - t1->ElapsedTime;
-    int t2RemainingTime = t2->BurstTime - t2->ElapsedTime;
-    return (t1RemainingTime >= t2RemainingTime) ? 1 : -1; // preemptive SRTN
+    return (t1->RemainingBurstTime >= t2->RemainingBurstTime) ? 1 : -1; // preemptive SRTN
 }
 
 static int Prioritycmp(Thread* t1,Thread* t2){
