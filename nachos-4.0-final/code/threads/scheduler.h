@@ -40,6 +40,8 @@ class Scheduler {
     
 	//<REPORT>
 	void UpdatePriority();
+	void AgingQueues();
+	void Aging(List<Thread *> *list);
 	//<REPORT>
 
     // SelfTest for scheduler is implemented in class Thread
@@ -53,6 +55,7 @@ class Scheduler {
 	SortedList<Thread* > *L1ReadyQueue;
 	SortedList<Thread* > *L2ReadyQueue;
 	List<Thread* > *L3ReadyQueue;
+	Thread *toBeDestroyed;	// finished thread to be distroyed
 	//<REPORT>
 };
 

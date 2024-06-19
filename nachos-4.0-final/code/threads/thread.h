@@ -120,7 +120,8 @@ class Thread {
     // 5. set/get RunTime
     // 6. set/get RRTime
     //<TODO1>
-    int priority;
+    int priority;           // input information
+    int burstTime;          // input information
     int WaitingTime;        // thread waiting in Ready Queue
     int StartTimestamp;     // thread start to run timestamp
     int RunningTime;        // thread running time in this round

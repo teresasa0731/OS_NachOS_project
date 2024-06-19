@@ -22,6 +22,7 @@
 
 Alarm::Alarm(bool doRandom)
 {
+    preemptive = false;
     timer = new Timer(doRandom, this);
 }
 
@@ -51,6 +52,8 @@ Alarm::CallBack()
 {
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
+
+    kernel->scheduler->AgingQueues();
     
 
     //<TODO>

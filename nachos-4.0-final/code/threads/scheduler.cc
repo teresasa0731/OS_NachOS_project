@@ -22,6 +22,7 @@
 #include "debug.h"
 #include "scheduler.h"
 #include "main.h"
+#include "list.h"
 
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
@@ -274,6 +275,49 @@ Scheduler::Print()
 void 
 Scheduler::UpdatePriority()
 {
+
+}
+
+void Scheduler::AgingQueues(){
+    Aging(L1ReadyQueue);
+    Aging(L2ReadyQueue);
+    Aging(L3ReadyQueue);
+}
+
+void Scheduler::Aging(List<Thread *> *list)
+{
+    ListIterator<Thread *> *iter = new ListIterator<Thread *>((List<Thread *> *)list);
+
+    for(;iter->IsDone() != true; iter->Next()){
+        Thread *iterThread = iter->Item();
+        int TotalWaitingTime = (kernel->stats->totalTicks - iterThread->ReadyQTimestamp) + iterThread->WaitingTime;
+        int oldPriority = iterThread->priority;
+        if((oldPriority >= 0 && oldPriority < 150) && TotalWaitingTime >= 400) {
+            iterThread->WaitingTime = TotalWaitingTime - 400;
+            iterThread->ReadyQTimestamp = kernel->stats->totalTicks;
+            iterThread->priority = (oldPriority + 10 > 149) ? 149 : oldPriority + 10;
+            list->Remove(iterThread);
+            if(iterThread->priority >= 100){    // Put in L1ReadyQueue
+                L1ReadyQueue->Insert(iterThread);
+                // currentThread in L2 or L3
+                if(kernel->currentThread->priority < 100){  
+                    kernel->alarm->preemptive = true;
+                // currentThread in L1
+                }else if(kernel->currentThread->priority >= 100 && kernel->currentThread->RemainingBurstTime > iterThread->RemainingBurstTime){
+                    kernel->alarm->preemptive = true;
+                }
+            }
+            else if(iterThread->priority >= 50){    // Put in L2ReadyQueue
+                L2ReadyQueue->Insert(iterThread);
+                // currentThread in L3
+                if(kernel->currentThread->priority < 50){ 
+                    kernel->alarm->preemptive = true;
+                }
+            }else{
+                L3ReadyQueue->Append(iterThread);
+            }
+        }
+    }
 
 }
 
