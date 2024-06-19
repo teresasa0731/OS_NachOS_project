@@ -29,21 +29,21 @@
 //	Initially, no ready threads.
 //----------------------------------------------------------------------
 
-int RemainingTimecmp(Thread* t1,Thread* t2){
+static int RemainingTimecmp(Thread* t1,Thread* t2){
     int t1RemainingTime = t1->BurstTime - t1->ElapsedTime;
     int t2RemainingTime = t2->BurstTime - t2->ElapsedTime;
     return (t1RemainingTime >= t2RemainingTime) ? 1 : -1; // preemptive SRTN
 }
 
-int Prioritycmp(Thread* t1,Thread* t2){
+static int Prioritycmp(Thread* t1,Thread* t2){
     return (t1->priority <= t2->priority) ? 1 : -1; // higher priority do first 
 }
 
 
-//<TODO>
+//<TODO1>
 // Declare sorting rule of SortedList for L1 & L2 ReadyQueue
 // Hint: Funtion Type should be "static int"
-//<TODO>
+//<TODO1>
 
 Scheduler::Scheduler()
 {
@@ -69,9 +69,9 @@ Scheduler::~Scheduler()
     // Remove L1, L2, L3 ReadyQueue
     //<TODO1>
     // delete readyList; 
-    delete L1; 
-    delete L2; 
-    delete L3; 
+    delete L1ReadyQueue; 
+    delete L2ReadyQueue; 
+    delete L3ReadyQueue; 
 } 
 
 //----------------------------------------------------------------------
@@ -91,13 +91,25 @@ Scheduler::ReadyToRun (Thread *thread)
     Statistics* stats = kernel->stats;
     thread->setStatus(READY);
     thread->ReadyQTimestamp = kernel->stats->totalTicks;    // in code\machine\stats.h
-    //<TODO>
+    //<TODO1>
     // According to priority of Thread, put them into corresponding ReadyQueue.
     // After inserting Thread into ReadyQueue, don't forget to reset some values.
     // Hint: L1 ReadyQueue is preemptive SRTN(Shortest Remaining Time Next).
     // When putting a new thread into L1 ReadyQueue, you need to check whether preemption or not.
-    //<TODO>
+    //<TODO1>
     // readyList->Append(thread);
+    // L1 queue: priority between 100 - 149
+    if (thread->priority < 150 && thread->priority >= 100){ 
+        L1ReadyQueue->Insert(thread);
+    }
+    // L2 queue: priority between 50 - 99
+    else if (thread->priority < 100 && thread->priority >= 50) {     
+        L2ReadyQueue->Insert(thread);
+    }
+    //L3 queue: priority between 0 - 49
+    else if (thread->priority < 50) {   
+        L3ReadyQueue->Append(thread);
+    }
 
 }
 
@@ -112,7 +124,24 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
+    Thread *thread = NULL;
     ASSERT(kernel->interrupt->getLevel() == IntOff);
+    if(!L1ReadyQueue->IsEmpty()){
+        thread = L1ReadyQueue->RemoveFront();
+        thread->WaitingTime += (kernel->stats->totalTicks - thread->ReadyQTimestamp);
+    }
+    else if(!L2ReadyQueue->IsEmpty()){
+        thread = L2ReadyQueue->RemoveFront();
+        thread->WaitingTime += (kernel->stats->totalTicks - thread->ReadyQTimestamp);
+    }
+    else if(!L3ReadyQueue->IsEmpty()){
+        thread = L3ReadyQueue->RemoveFront();
+        thread->WaitingTime += (kernel->stats->totalTicks - thread->ReadyQTimestamp);
+    }
+    else{
+        thread = NULL;
+    }
+    return thread;
 
     /*if (readyList->IsEmpty()) {
     return NULL;
@@ -120,9 +149,9 @@ Scheduler::FindNextToRun ()
         return readyList->RemoveFront();
     }*/
 
-    //<TODO>
+    //<TODO1>
     // a.k.a. Find Next (Thread in ReadyQueue) to Run
-    //<TODO>
+    //<TODO1>
 }
 
 //----------------------------------------------------------------------

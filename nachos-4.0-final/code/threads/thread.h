@@ -121,11 +121,11 @@ class Thread {
     // 6. set/get RRTime
     //<TODO>
     int priority;
-    int StartTimestamp;
-    int BurstTime;
-    int ElapsedTime;
-    int InReadyQTime;
-    int ReadyQTimestamp;
+    int StartTimestamp;   // thread start to run timestamp
+    int BurstTime;        // thread total burst time (theoretical)
+    int ElapsedTime;      // thread already running time
+    int WaitingTime;      // thread waiting in Ready Queue
+    int ReadyQTimestamp;  // thread into Ready Queue timestamp
 
 
   private:
