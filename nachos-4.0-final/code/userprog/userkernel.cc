@@ -32,14 +32,20 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
 		    debugUserProg = TRUE;
 		}
 		else if (strcmp(argv[i], "-e") == 0) {
-			execfile[++execfileNum]= argv[++i];
+			execfile[++execfileNum] = argv[++i];
 		}
-		//<TODO>
+		//<TODO_YC>
         // Get execfile & its priority & burst time from argv, then save them.
 		else if (strcmp(argv[i], "-epb") == 0) {
-
+            execfile[++execfileNum] = argv[++i];
+            threadPriority[++threadNum] = atoi(argv[++i]);
+            threadRemainingBurstTime[threadNum] = atoi(argv[++i]);
+            cout << "epb func get var : " << endl; 
+            cout << " execfile : " << execfile[execfileNum] << endl;
+            cout << " current threadNum : " << threadNum;
+            cout << " Priority : " << threadPriority[threadNum];
 	    }
-	    //<TODO>
+	    //<TODO_YC>
 	    else if (strcmp(argv[i], "-u") == 0) {
 			cout << "===========The following argument is defined in userkernel.cc" << endl;
 			cout << "Partial usage: nachos [-s]\n";
