@@ -10,5 +10,5 @@
 #### (f) L3 queue uses a round-robin scheduling algorithm with time quantum 200 ticks (you should select a thread to run once 200 ticks elapsed). If two threads enter the L3 queue with the same priority, either one of them can execute first.
 #### (g) An aging mechanism must be implemented, so that the priority of a process is increased by 10 after waiting for more than 400 ticks (Note: The operations of preemption and priority updating can be delayed until the next timer alarm interval).
 ### 2.2 Add a command line argument -epb for nachos to initialize priority of process. E.g., the
-####command below will launch 2 processes: hw2_test1 with initial priority 40 and burst time 5000,and hw2_test2 with initial priority 80 and burst time 4000. $ userprog/nachos -epb test/hw2_test1 40 5000 -epb test/hw2_test2 80 4000
+#### command below will launch 2 processes: hw2_test1 with initial priority 40 and burst time 5000,and hw2_test2 with initial priority 80 and burst time 4000. $ userprog/nachos -epb test/hw2_test1 40 5000 -epb test/hw2_test2 80 4000
 ### 2.3 Add a debugging flag z and use the DEBUG('z', expr) macro (defined in debug.h) to print following messages. Replace {...} to the corresponding value.
