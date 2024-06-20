@@ -73,7 +73,7 @@ Alarm::CallBack()
         kernel->scheduler->UpdatePriority();
         if(kernel->currentThread->getPriority() < 50 && kernel->currentThread->getRRTime() >= 200)
         {
-            kernel->currentThread->Yield();
+            kernel->interrupt->YieldOnReturn();
         }
     }
 
