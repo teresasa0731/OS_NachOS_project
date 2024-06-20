@@ -109,9 +109,10 @@ class Thread {
     int* getstackTop() {return (stackTop);}
 
     char* getName() { return (name); }
+    int getID() { return (ID); }
     void Print() { cout << name; }
     void SelfTest();		// test whether thread impl is working
-    //<TODO1>
+    //<TODO_Teresa>
     // Set & Get the value in Class Thread
     // 1. get ID
     // 2. set/get Priority
@@ -119,14 +120,18 @@ class Thread {
     // 4. set/get RemainingBurstTime
     // 5. set/get RunTime
     // 6. set/get RRTime
-    //<TODO1>
-    int priority;           // input information
-    int burstTime;          // input information
-    int WaitingTime;        // thread waiting in Ready Queue
-    int StartTimestamp;     // thread start to run timestamp
-    int RunningTime;        // thread running time in this round
-    int RemainingBurstTime; // thread remaing excution time, calculate from Burst Time - Elapsed Time
-    int ReadyQTimestamp;    // thread into Ready Queue timestamp
+    //<TODO_Teresa>
+  
+    // get process pirority 
+    int getPriority() { return (Priority); }    
+    // get the time waiting in Ready Queue (clean up when the thread starts)
+    int getWaitTime() { return (WaitTime); }
+    // get thread remaining burst time (input from user)
+    int getRemainingBurstTime() { return (RemainingBurstTime); }  
+    // get the time thread running (clean up when swap-out or finishing)
+    int getRunTime() { return (RunTime); }    
+    // get the time running under RR schedule (L3)
+    int getRRTime() { return (RRTime); }        
 
 
   private:

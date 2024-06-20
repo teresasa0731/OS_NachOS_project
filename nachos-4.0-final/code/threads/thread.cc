@@ -48,11 +48,10 @@ Thread::Thread(char* threadName, int threadID)
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
-    StartTimestamp = 0;   // thread start to run timestamp
-    RunningTime = 0;        // thread total burst time (theoretical)
-    RemainingBurstTime = ;      // thread already running time
-    WaitingTime = 0;      // thread waiting in Ready Queue
-    ReadyQTimestamp = 0;  // thread into Ready Queue timestamp
+    WaitTime = 0;
+    RemainingBurstTime = 0;
+    RunTime = 0;
+    RRTime = 0;
 }
 
 //----------------------------------------------------------------------
