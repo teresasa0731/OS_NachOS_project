@@ -43,7 +43,8 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
             cout << "epb func get var : " << endl; 
             cout << " execfile : " << execfile[execfileNum] << endl;
             cout << " current threadNum : " << threadNum << endl;
-            cout << " Priority : " << threadPriority[execfileNum] << endl;
+            cout << " Priority : " << threadPriority[threadNum] << endl;
+            cout << " RemainingBurstTime : " << threadRemainingBurstTime[threadNum] << endl;
 	    }
 	    //<TODO_YC>
 	    else if (strcmp(argv[i], "-u") == 0) {
@@ -183,7 +184,7 @@ ForkExecute(Thread *t)
     // When Thread t goes to Running state in the first time, its file should be loaded & executed.
     // Hint: This function would not be called until Thread t is on running state.
     //<TODO_Teresa>
-    if(!t->space->Load(t->getName())) return;
+    
     t->space->Execute(t->getName());
 }
 
@@ -195,9 +196,12 @@ UserProgKernel::InitializeOneThread(char* name, int priority, int burst_time)
     // While creating a new thread, thread should be initialized, and then forked.
     t[threadNum] = new Thread(name,threadNum);
     t[threadNum]->space = new AddrSpace();
+<<<<<<< HEAD
     t[threadNum]->setPriority(priority);
     t[threadNum]->setRemainingBurstTime(burst_time);
 
+=======
+>>>>>>> 577ebe9fb0cb6b473f6c68d977b7581313de5505
     t[threadNum]->Fork((VoidFunctionPtr) &ForkExecute, (void *)t[threadNum]);
     //<TODO_Teresa>
 
