@@ -265,6 +265,7 @@ Thread::Sleep (bool finishing)
     ASSERT(kernel->interrupt->getLevel() == IntOff);
     
     DEBUG(dbgThread, "Sleeping thread: " << name << ", ID: " << ID);
+    cout <<"[FOR DEBUG]" << this->getID() << "go sleep, try to pick next" << "\n";
 
     status = BLOCKED;
     while ((nextThread = kernel->scheduler->FindNextToRun()) == NULL)

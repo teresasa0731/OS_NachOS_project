@@ -283,7 +283,7 @@ void Scheduler::Aging(List<Thread *> *list)
         int oldPriority = iterThread->getPriority();
         // aging detection
         if((oldPriority >= 0 && oldPriority < 150) && oldWaitingTime >= 400) {
-            iterThread->setWaitTime(0) ;
+            iterThread->setWaitTime(0);
             iterThread->setPriority((oldPriority + 10 > 149) ? 149 : oldPriority + 10);
             DEBUG('z' ,"[UpdatePriority] Tick [" << kernel->stats->totalTicks << "]: Thread [" <<  iterThread->getID()  << "] changes its priority from[" << oldPriority << "] to [" << iterThread-> getPriority() <<"]");
             list->Remove(iterThread);
