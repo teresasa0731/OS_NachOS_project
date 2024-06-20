@@ -96,3 +96,6 @@ hw2_test2: hw2_test2.o start.o
 	$(LD) $(LDFLAGS) start.o hw2_test2.o -o hw2_test2.coff
 	../bin/coff2noff hw2_test2.coff hw2_test2
 #<REPORT>
+
+clean:
+	rm -f *.o *.coff halt shell matmult sort test1 test2 fileTest1 fileTest2 hw2_test1 hw2_test2
