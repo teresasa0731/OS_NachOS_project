@@ -25,7 +25,7 @@ CPPFLAGS = $(INCDIR)
 #CPPFLAGS = -P $(INCDIR)
 
 
-CC = $(GCCDIR)gcc
+CC = $(GCCDIR)gcc -w
 AS = $(GCCDIR)as
 LD = $(GCCDIR)ld
 
