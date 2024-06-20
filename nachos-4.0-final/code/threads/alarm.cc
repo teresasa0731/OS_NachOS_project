@@ -53,7 +53,7 @@ Alarm::CallBack()
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
 
-    kernel->scheduler->AgingQueues();
+    //kernel->scheduler->AgingQueues();
     
 
     //<TODO>
@@ -66,6 +66,15 @@ Alarm::CallBack()
     // 2. Update RunTime & RRTime
 
     // 3. Check Round Robin
+    if(SystemTick % TimerTicks == 0)
+    {
+        kernel->scheduler->UpdatePriority();
+        kernel->currentThread->setRRTime(kernel->currentThread->getRRTime()+100);
+        if(kernel->currentThread->getPriority() < 50 && kernel->currentThread->getRRTime() >= 200)
+        {
+            kernel->currentThread->Yield();
+        }
+    }
 
     //<TODO>
     
