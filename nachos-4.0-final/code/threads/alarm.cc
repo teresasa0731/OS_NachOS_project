@@ -63,16 +63,23 @@ Alarm::CallBack()
     // 2. Update RunTime & RRTime
 
     // 3. Check Round Robin
-    if(SystemTick % TimerTicks == 0)
+    if(status == IdleMode)
     {
-        kernel->scheduler->UpdatePriority();
-        kernel->currentThread->setRRTime(kernel->currentThread->getRRTime()+100);
-        if(kernel->currentThread->getPriority() < 50 && kernel->currentThread->getRRTime() >= 200)
+        if(!interrupt->AnyFutureInterrupts())
+            timer->Disable();
+    }
+    else{
+        if(SystemTick % TimerTicks == 0)
         {
-            kernel->currentThread->Yield();
+            kernel->scheduler->UpdatePriority();
+            kernel->currentThread->setRRTime(kernel->currentThread->getRRTime()+100);
+            if(kernel->currentThread->getPriority() < 50 && kernel->currentThread->getRRTime() >= 200)
+            {
+                kernel->currentThread->Yield();
+            }
         }
     }
-
+    
     //<TODO_YC>
 }
 
