@@ -265,7 +265,7 @@ Thread::Sleep (bool finishing)
     ASSERT(kernel->interrupt->getLevel() == IntOff);
     
     DEBUG(dbgThread, "Sleeping thread: " << name << ", ID: " << ID);
-    cout <<"[FOR DEBUG]" << this->getID() << "go sleep, try to pick next" << "\n";
+    cout <<"** [FOR DEBUG] " << this->getID() << " go sleep, try to pick next" << "\n";
 
     status = BLOCKED;
     while ((nextThread = kernel->scheduler->FindNextToRun()) == NULL)
@@ -279,7 +279,7 @@ Thread::Sleep (bool finishing)
     this->setRemainingBurstTime(this->getRemainingBurstTime() - this->getRRTime());
     this->setRunTime(this->getRunTime() + this->getRRTime());
     if(!finishing){
-        DEBUG('z',"[UpdateRemainingBurstTime] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()  << "] update approximate burst time, from: [" << this->getRemainingBurstTime() + this->getRRTime() << "] - [" << this->getRemainingBurstTime() << "], to [" << this->getRemainingBurstTime() << "]");
+        DEBUG('z',"[UpdateRemainingBurstTime] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()  << "] update approximate burst time, from: [" << this->getRemainingBurstTime() + this->getRRTime() << "] - [" << this->getRRTime() << "], to [" << this->getRemainingBurstTime() << "]");
     }
     this->setRRTime(0);
     DEBUG('z',"[ContextSwitch] Tick [" << kernel->stats->totalTicks << "]: Thread [" << nextThread->getID()  << "] is now selected for execution, thread [" << this->getID() << "] is replaced, and it has executed [" << this->getRunTime() << "] ticks");
