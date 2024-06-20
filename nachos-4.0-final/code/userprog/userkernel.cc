@@ -192,8 +192,9 @@ UserProgKernel::InitializeOneThread(char* name, int priority, int burst_time)
     //<TODO_Teresa>
     // When each execfile comes to Exec function, Kernel helps to create a thread for it.
     // While creating a new thread, thread should be initialized, and then forked.
-    t[threadNum] = new Thread(name,threadNum);
     t[threadNum]->space = new AddrSpace();
+    t[threadNum] = new Thread(name,threadNum);
+    
     t[threadNum]->Fork((VoidFunctionPtr) &ForkExecute, (void *)t[threadNum]);
     //<TODO_Teresa>
 
