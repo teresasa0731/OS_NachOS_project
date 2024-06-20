@@ -38,12 +38,12 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
         // Get execfile & its priority & burst time from argv, then save them.
 		else if (strcmp(argv[i], "-epb") == 0) {
             execfile[++execfileNum] = argv[++i];
-            threadPriority[++threadNum] = atoi(argv[++i]);
-            threadRemainingBurstTime[threadNum] = atoi(argv[++i]);
+            threadPriority[execfileNum] = atoi(argv[++i]);
+            threadRemainingBurstTime[execfileNum] = atoi(argv[++i]);
             cout << "epb func get var : " << endl; 
             cout << " execfile : " << execfile[execfileNum] << endl;
             cout << " current threadNum : " << threadNum << endl;
-            cout << " Priority : " << threadPriority[threadNum] << endl;
+            cout << " Priority : " << threadPriority[execfileNum] << endl;
 	    }
 	    //<TODO_YC>
 	    else if (strcmp(argv[i], "-u") == 0) {
@@ -195,6 +195,8 @@ UserProgKernel::InitializeOneThread(char* name, int priority, int burst_time)
     // While creating a new thread, thread should be initialized, and then forked.
     t[threadNum] = new Thread(name,threadNum);
     t[threadNum]->space = new AddrSpace();
+    t[threadNum]->setPriority(priority);
+    t[threadNum]->setRemainingBurstTime(burst_time);
 
     t[threadNum]->Fork((VoidFunctionPtr) &ForkExecute, (void *)t[threadNum]);
     //<TODO_Teresa>
