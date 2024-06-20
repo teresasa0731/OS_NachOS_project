@@ -282,8 +282,10 @@ Thread::Sleep (bool finishing)
         DEBUG('z',"[UpdateRemainingBurstTime] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()  << "] update approximate burst time, from: [" << this->getRemainingBurstTime() + this->getRRTime() << "] - [" << this->getRRTime() << "], to [" << this->getRemainingBurstTime() << "]");
     }
     this->setRRTime(0);
-    DEBUG('z',"[ContextSwitch] Tick [" << kernel->stats->totalTicks << "]: Thread [" << nextThread->getID()  << "] is now selected for execution, thread [" << this->getID() << "] is replaced, and it has executed [" << this->getRunTime() << "] ticks");
-    kernel->scheduler->Run(nextThread, finishing);
+    if (nextThread != NULL && this != nextThread) {
+        DEBUG('z',"[ContextSwitch] Tick [" << kernel->stats->totalTicks << "]: Thread [" << nextThread->getID()  << "] is now selected for execution, thread [" << this->getID() << "] is replaced, and it has executed [" << this->getRunTime() << "] ticks");
+        kernel->scheduler->Run(nextThread, finishing);
+    }
     //<TODO_Teresa>
 }
 
