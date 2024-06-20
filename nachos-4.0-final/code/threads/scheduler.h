@@ -54,7 +54,6 @@ class Scheduler {
 	SortedList<Thread* > *L1ReadyQueue;
 	SortedList<Thread* > *L2ReadyQueue;
 	List<Thread* > *L3ReadyQueue;
-	Thread *toBeDestroyed;	// finished thread to be distroyed
 	//<REPORT>
 };
 

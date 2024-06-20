@@ -45,7 +45,7 @@ class UserProgKernel : public ThreadedKernel {
     bool PhysicalPageUsed[NumPhysPages];
     int availablePhysicalPages(){
         int availablePageCount = 0;
-        for(int i = 0; i < NumPhysPages; i++){
+        for(unsigned int i = 0; i < NumPhysPages; i++){
             if (PhysicalPageUsed[i] == FALSE)
               availablePageCount++;
         }
