@@ -69,8 +69,8 @@ Alarm::CallBack()
             timer->Disable();
     }
     else{
-        kernel->scheduler->UpdatePriority();
         kernel->currentThread->setRRTime(kernel->currentThread->getRRTime()+100);
+        kernel->scheduler->UpdatePriority();
         if(kernel->currentThread->getPriority() < 50 && kernel->currentThread->getRRTime() >= 200)
         {
             kernel->currentThread->Yield();
