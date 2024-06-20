@@ -126,7 +126,7 @@ Interrupt::SetLevel(IntStatus now)
     IntStatus old = level;
     
     // interrupt handlers are prohibited from enabling interrupts
-    cout << "(now == IntOff) : " << (now == IntOff) << " , (inHandler == FALSE) : " << (inHandler == FALSE) << endl;
+    // cout << "(now == IntOff) : " << (now == IntOff) << " , (inHandler == FALSE) : " << (inHandler == FALSE) << endl;
     ASSERT((now == IntOff) || (inHandler == FALSE));
 
     ChangeLevel(old, now);			// change to new state
