@@ -128,10 +128,21 @@ class Thread {
     int getWaitTime() { return (WaitTime); }
     // get thread remaining burst time (input from user)
     int getRemainingBurstTime() { return (RemainingBurstTime); }  
-    // get the time thread running (clean up when swap-out or finishing)
+    // get total running time
     int getRunTime() { return (RunTime); }    
-    // get the time running under RR schedule (L3)
+    // get the time running in this round
     int getRRTime() { return (RRTime); }        
+
+    // set process pirority 
+    int setPriority(int p) { Priority = p; }    
+    // set the time waiting in Ready Queue (clean up when the thread starts)
+    int setWaitTime(int wt) { WaitTime = wt; }
+    // set thread remaining burst time (input from user)
+    int setRemainingBurstTime(int rbt) { RemainingBurstTime = rbt; }  
+    // set total running time
+    int setRunTime(int rt) { RunTime = rt; }    
+    // set the time running in this round (clean up when swap out or finishing)
+    int setRRTime(int rrt) { RRTime = rrt; }      
 
 
   private:

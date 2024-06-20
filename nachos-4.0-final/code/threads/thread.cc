@@ -217,18 +217,21 @@ Thread::Yield ()
     
     DEBUG(dbgThread, "Yielding thread: " << name << ", ID: " << ID);
     
-    //<TODO1>
+    //<TODO_Teresa>
     // 1. Put current_thread in running state to ready state
     // 2. Then, find next thread from ready state to push on running state
     // 3. After resetting some value of current_thread, then context switch
-    this->RunningTime += kernel->stats->totalTicks - this->StartTimestamp; 
-    this->RemainingBurstTime = this->Bursttime - RunningTime;
+    this->setRunTime(this->getRunTime() + this->getRRTime());
+    this->setRemainingBurstTime(this->getRemainingBurstTime() - this->getRRTime());
+    DEBUG('z',"[UpdateRemainingBurstTime] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()  << "] update approximate burst time, from: [" << this->getRemainingBurstTime() + this->getRRTime() << "] - [" << this->getRemainingBurstTime() << "], to [" << this->getRemainingBurstTime() << "]");
+    this->setRRTime(0);
     nextThread = kernel->scheduler->FindNextToRun();
     if (nextThread != NULL) {
+        DEBUG('z',"[ContextSwitch] Tick [" << kernel->stats->totalTicks << "]: Thread [" << nextThread->getID()  << "] is now selected for execution, thread [" << this->getID() << "] is replaced, and it has executed [" << this->getRunTime() << "] ticks");
 	    kernel->scheduler->ReadyToRun(this);
 	    kernel->scheduler->Run(nextThread, FALSE); 
     }
-    //<TODO1>
+    //<TODO_Teresa>
 
     (void) kernel->interrupt->SetLevel(oldLevel);
 }
@@ -267,16 +270,20 @@ Thread::Sleep (bool finishing)
     while ((nextThread = kernel->scheduler->FindNextToRun()) == NULL)
 	    kernel->interrupt->Idle();	// no one to run, wait for an interruptd
 
-    //<TODO1>
+    //<TODO_Teresa>
     // In Thread::Sleep(finishing), we put the current_thread to waiting or terminated state (depend on finishing)
     // , and determine finishing on Scheduler::Run(nextThread, finishing), not here.
     // 1. Update RemainingBurstTime
     // 2. Reset some value of current_thread, then context switch
-    this->RunningTime += (kernel->stats->totalTicks - this->StartTimestamp);
-    this->RemainingBurstTime = bursttime - this->RunningTime;
-    this->RunningTime = 0;
+    this->setRemainingBurstTime(this->getRemainingBurstTime() - this->getRRTime());
+    this->setRunTime(this->getRunTime() + this->getRRTime());
+    if(!finishing){
+        DEBUG('z',"[UpdateRemainingBurstTime] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()  << "] update approximate burst time, from: [" << this->getRemainingBurstTime() + this->getRRTime() << "] - [" << this->getRemainingBurstTime() << "], to [" << this->getRemainingBurstTime() << "]");
+    }
+    this->setRRTime(0);
+    DEBUG('z',"[ContextSwitch] Tick [" << kernel->stats->totalTicks << "]: Thread [" << nextThread->getID()  << "] is now selected for execution, thread [" << this->getID() << "] is replaced, and it has executed [" << this->getRunTime() << "] ticks");
     kernel->scheduler->Run(nextThread, finishing);
-    //<TODO1>
+    //<TODO_Teresa>
 }
 
 //----------------------------------------------------------------------
