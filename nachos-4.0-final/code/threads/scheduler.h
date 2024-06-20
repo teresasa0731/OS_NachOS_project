@@ -40,7 +40,6 @@ class Scheduler {
     
 	//<REPORT>
 	void UpdatePriority();
-	void AgingQueues();
 	void Aging(List<Thread *> *list);
 	//<REPORT>
 
