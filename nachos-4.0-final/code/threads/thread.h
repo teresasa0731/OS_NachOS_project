@@ -134,15 +134,15 @@ class Thread {
     int getRRTime() { return (RRTime); }        
 
     // set process pirority 
-    int setPriority(int p) { Priority = p; }    
+    void setPriority(int p) { Priority = p; }    
     // set the time waiting in Ready Queue (clean up when the thread starts)
-    int setWaitTime(int wt) { WaitTime = wt; }
+    void setWaitTime(int wt) { WaitTime = wt; }
     // set thread remaining burst time (input from user)
-    int setRemainingBurstTime(int rbt) { RemainingBurstTime = rbt; }  
+    void setRemainingBurstTime(int rbt) { RemainingBurstTime = rbt; }  
     // set total running time
-    int setRunTime(int rt) { RunTime = rt; }    
+    void setRunTime(int rt) { RunTime = rt; }    
     // set the time running in this round (clean up when swap out or finishing)
-    int setRRTime(int rrt) { RRTime = rrt; }      
+    void setRRTime(int rrt) { RRTime = rrt; }      
 
 
   private:
