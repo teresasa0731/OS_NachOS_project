@@ -42,9 +42,9 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
             threadRemainingBurstTime[execfileNum] = atoi(argv[++i]);
             cout << "epb func get var : " << endl; 
             cout << " execfile : " << execfile[execfileNum] << endl;
-            cout << " current threadNum : " << threadNum << endl;
-            cout << " Priority : " << threadPriority[threadNum] << endl;
-            cout << " RemainingBurstTime : " << threadRemainingBurstTime[threadNum] << endl;
+            cout << " current threadNum : " << execfileNum << endl;
+            cout << " Priority : " << threadPriority[execfileNum] << endl;
+            cout << " RemainingBurstTime : " << threadRemainingBurstTime[execfileNum] << endl;
 	    }
 	    //<TODO_YC>
 	    else if (strcmp(argv[i], "-u") == 0) {
@@ -184,7 +184,7 @@ ForkExecute(Thread *t)
     // When Thread t goes to Running state in the first time, its file should be loaded & executed.
     // Hint: This function would not be called until Thread t is on running state.
     //<TODO_Teresa>
-    
+    if(!t->space->Load(t->getName()));
     t->space->Execute(t->getName());
 }
 
