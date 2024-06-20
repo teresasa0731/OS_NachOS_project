@@ -42,8 +42,8 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
             threadRemainingBurstTime[threadNum] = atoi(argv[++i]);
             cout << "epb func get var : " << endl; 
             cout << " execfile : " << execfile[execfileNum] << endl;
-            cout << " current threadNum : " << threadNum;
-            cout << " Priority : " << threadPriority[threadNum];
+            cout << " current threadNum : " << threadNum << endl;
+            cout << " Priority : " << threadPriority[threadNum] << endl;
 	    }
 	    //<TODO_YC>
 	    else if (strcmp(argv[i], "-u") == 0) {

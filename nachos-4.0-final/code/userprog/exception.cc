@@ -162,7 +162,7 @@ ExceptionHandler(ExceptionType which)
 	    cerr << "Unexpected user mode exception" << which << "\n";
 	    break;
     }
-	cout << "which:" << which << "\n";
-	cout << "type:" << type << "\n";
+	// cout << "which:" << which << "\n";
+	// cout << "type:" << type << "\n";
     ASSERTNOTREACHED();
 }
