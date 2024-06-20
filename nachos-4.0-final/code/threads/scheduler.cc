@@ -40,14 +40,12 @@
 
 // Function 1. Function definition of sorting rule of L1 ReadyQueue
 static int RemainingTimecmp(Thread* t1,Thread* t2){
-    if(t1->getRemainingBurstTime() == t2->getRemainingBurstTime()) return 0;
-    else return (t1->getRemainingBurstTime() > t2->getRemainingBurstTime()) ? 1 : -1; // preemptive SRTN
+    return t1->getRemainingBurstTime() - t2->getRemainingBurstTime(); // preemptive SRTN
 }
 
 // Function 2. Function definition of sorting rule of L2 ReadyQueue
-static int Prioritycmp(Thread* t1,Thread* t2){
-    if(t1->getPriority() == t2->getPriority()) return 0;
-    return (t1->getPriority() <= t2->getPriority()) ? 1 : -1; // higher priority do first 
+static int PIDcmp(Thread* t1,Thread* t2){
+    return t1->getID() - t2->getID(); // smaller pid do first 
 }
 
 Scheduler::Scheduler()
@@ -56,7 +54,7 @@ Scheduler::Scheduler()
     // Initialize L1, L2, L3 ReadyQueue
     //<TODO_Teresa>
     L1ReadyQueue = new SortedList<Thread *>(RemainingTimecmp);
-    L2ReadyQueue = new SortedList<Thread *>(Prioritycmp);
+    L2ReadyQueue = new SortedList<Thread *>(PIDcmp);
     L3ReadyQueue = new List<Thread *>; 
 	toBeDestroyed = NULL;
 } 
@@ -174,7 +172,7 @@ Scheduler::Run (Thread *nextThread, bool finishing)
 {
     Thread *oldThread = kernel->currentThread;
  
-	cout << "Current Thread" <<oldThread->getName() << "    Next Thread"<<nextThread->getName()<<endl;
+	// cout << "Current Thread" <<oldThread->getName() << "    Next Thread"<<nextThread->getName()<<endl;
    
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
@@ -204,7 +202,7 @@ Scheduler::Run (Thread *nextThread, bool finishing)
     // a bit to figure out what happens after this, both from the point
     // of view of the thread and from the perspective of the "outside world".
 
-    cout << "Switching from: " << oldThread->getID() << " to: " << nextThread->getID() << endl;
+    // cout << "Switching from: " << oldThread->getID() << " to: " << nextThread->getID() << endl;
     SWITCH(oldThread, nextThread);
 
     // we're back, running oldThread

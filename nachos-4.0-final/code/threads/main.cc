@@ -82,10 +82,10 @@ main(int argc, char **argv)
     CallOnUserAbort(Cleanup);		// if user hits ctl-C
 
 
-    // kernel->SelfTest();
+    //kernel->SelfTest();
 
     //<REPORT>
-    // kernel->Run();
+    //kernel->Run();
     kernel->InitializeAllThreads();
     //<REPORT>
 

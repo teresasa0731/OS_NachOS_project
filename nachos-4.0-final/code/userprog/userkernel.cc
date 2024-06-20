@@ -183,6 +183,7 @@ ForkExecute(Thread *t)
     // When Thread t goes to Running state in the first time, its file should be loaded & executed.
     // Hint: This function would not be called until Thread t is on running state.
     //<TODO_Teresa>
+    if(!t->space->Load(t->getName())) return;
     t->space->Execute(t->getName());
 }
 
@@ -206,9 +207,9 @@ void
 UserProgKernel::InitializeAllThreads()
 {
     for (int i = 1; i <= execfileNum; i++){
-        cout << "execfile[" << i << "]: " << execfile[i] << " start " << endl;
+        // cout << "execfile[" << i << "]: " << execfile[i] << " start " << endl;
         int a = InitializeOneThread(execfile[i], threadPriority[i], threadRemainingBurstTime[i]);
-        cout << "execfile[" << i << "]: " << execfile[i] << " end "<< endl;
+        // cout << "execfile[" << i << "]: " << execfile[i] << " end "<< endl;
     }
     // After InitializeAllThreads(), let main thread be terminated that we can start to run our thread.
     currentThread->Finish();

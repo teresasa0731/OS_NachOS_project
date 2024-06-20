@@ -30,7 +30,7 @@ class ThreadedKernel {
     void Run();			// do kernel stuff
 				    
     void SelfTest();		// test whether kernel is working
-    
+
 // These are public for notational convenience; really, 
 // they're global variables used everywhere.  Putting them into 
 // a class makes it easier to support multiple kernels, when we
