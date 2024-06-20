@@ -288,38 +288,28 @@ void Scheduler::Aging(List<Thread *> *list)
             DEBUG('z' ,"[UpdatePriority] Tick [" << kernel->stats->totalTicks << "]: Thread [" <<  iterThread->getID()  << "] changes its priority from[" << oldPriority << "] to [" << iterThread-> getPriority() <<"]");
             list->Remove(iterThread);
             ReadyToRun(iterThread);
-            // // aging thread put into L1 ready queue
-            // if(iterThread->getPriority() >= 100){
-            //     L1ReadyQueue->Insert(iterThread);
-            //     if(list != L1ReadyQueue){
-            //         DEBUG('z',"[RemoveFromQueue] Tick [" << kernel->stats->totalTicks << "]: Thread [" << iterThread->getID()  << "] is removed from queue L[2]");
-            //         DEBUG('z' ,"[InsertToQueue] Tick [" << kernel->stats->totalTicks << "]: Thread [" << iterThread->getID()  << "] is inserted into queue L[1]");
-            //     }
-            //     // preemption condition
-            //     // 1. current running Thread in L2 or L3
-            //     // 2. current running Thread in L1 & Remaining Burst Time is greater
-            //     if(kernel->currentThread->getPriority() < 100){  
-            //         kernel->alarm->preemptive = true;
-            //     }else if(kernel->currentThread->getPriority() >= 100 && kernel->currentThread->getRemainingBurstTime() > iterThread->getRemainingBurstTime()){
-            //         kernel->alarm->preemptive = true;
-            //     }
-            // }
-            // // aging thread put into L2 ready queue
-            // else if(iterThread->getPriority() >= 50){
-            //     L2ReadyQueue->Insert(iterThread);
-            //     if(list != L2ReadyQueue){
-            //         DEBUG('z', "[RemoveFromQueue] Tick [" << kernel->stats->totalTicks << "]: Thread [" << iterThread->getID()  << "] is removed from queue L[3]");
-            //         DEBUG('z', "[InsertToQueue] Tick [" << kernel->stats->totalTicks << "]: Thread [" << iterThread->getID()  << "] is inserted into queue L[2]");
-            //     }
-            //     // preemption condition
-            //     // 1. currentThread in L3
-            //     if(kernel->currentThread->getPriority() < 50){ 
-            //         kernel->alarm->preemptive = true;
-            //     }
-            // // aging thread put back into L3 ready queue
-            // }else{
-            //     L3ReadyQueue->Append(iterThread);
-            // }
+            // aging thread put into L1 ready queue
+            if(iterThread->getPriority() >= 100){
+                // preemption condition
+                // 1. current running Thread in L2 or L3
+                // 2. current running Thread in L1 & Remaining Burst Time is greater
+                if(kernel->currentThread->getPriority() < 100){  
+                    kernel->interrupt->YieldOnReturn();
+                }else if(kernel->currentThread->getPriority() >= 100 && kernel->currentThread->getRemainingBurstTime() > iterThread->getRemainingBurstTime()){
+                    kernel->interrupt->YieldOnReturn();
+                }
+            }
+            // aging thread put into L2 ready queue
+            else if(iterThread->getPriority() >= 50){
+                // preemption condition
+                // 1. currentThread in L3
+                if(kernel->currentThread->getPriority() < 50){ 
+                    kernel->interrupt->YieldOnReturn();
+                }
+            // aging thread put back into L3 ready queue
+            }else{
+                L3ReadyQueue->Append(iterThread);
+            }
         }   // end of aging operation
     }   // end of for-loop
 }
