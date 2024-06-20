@@ -51,12 +51,9 @@ void
 Alarm::CallBack() 
 {
     Interrupt *interrupt = kernel->interrupt;
-    MachineStatus status = interrupt->getStatus();
+    MachineStatus status = interrupt->getStatus();    
 
-    //kernel->scheduler->AgingQueues();
-    
-
-    //<TODO>
+    //<TODO_YC>
 
 
     // In each 100 ticks, 
@@ -76,14 +73,6 @@ Alarm::CallBack()
         }
     }
 
-    //<TODO>
-    
-     //    if (status == IdleMode) {    // is it time to quit?
- //        if (!interrupt->AnyFutureInterrupts()) {
-    //        timer->Disable(); // turn off the timer
-    // }
- //    } else {         // there's someone to preempt
-    //    interrupt->YieldOnReturn();
- //    }
+    //<TODO_YC>
 }
 

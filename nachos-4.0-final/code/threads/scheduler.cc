@@ -279,8 +279,11 @@ void Scheduler::Aging(List<Thread *> *list)
 
     for(;iter->IsDone() != true; iter->Next()){
         Thread *iterThread = iter->Item();
-        int oldPriority = iterThread->getPriority();
+        // waiting time update
         int oldWaitingTime = iterThread->getWaitTime();
+        iterThread->setWaitTime(oldWaitingTime + 400);
+        int oldPriority = iterThread->getPriority();
+        // aging detection
         if((oldPriority >= 0 && oldPriority < 150) && oldWaitingTime >= 400) {
             iterThread->setWaitTime(oldWaitingTime - 400) ;
             iterThread->setPriority((oldPriority + 10 > 149) ? 149 : oldPriority + 10);

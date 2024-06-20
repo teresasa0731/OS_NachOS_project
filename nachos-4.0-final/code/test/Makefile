@@ -33,10 +33,10 @@ CPP = /lib/cpp
 INCDIR =-I../userprog -I../threads -I../lib
 CFLAGS = -G 0 -c $(INCDIR)
 
-#<TODO>
+#<TODO_>
 # Add test program to make
 all: halt shell matmult sort test1 test2 fileTest1 fileTest2 
-#<TODO>
+#<TODO_>
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.s > strt.s
